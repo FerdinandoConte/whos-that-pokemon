@@ -11,6 +11,8 @@ export function sanitizeName(raw) {
     .replace(/[\u0000-\u001f\u007f-\u009f]/g, '')
     .replace(/\s+/g, ' ')
     .trim()
+    .replace(/^_+/, '') // leading "__" is reserved for rule checks
+    .trim()
     .slice(0, LIMITS.nameMax);
 }
 
@@ -105,6 +107,8 @@ export function createFirestoreBoard(config, fetchImpl = globalThis.fetch) {
         const rows = await r.json();
         const entries = (Array.isArray(rows) ? rows : [])
           .filter((row) => row && row.document && row.document.fields)
+          // names starting with "__" are reserved for checks of the live rules
+          .filter((row) => !String(row.document.fields.name?.stringValue ?? '').startsWith('__'))
           .map(({ document: { fields: f } }) => ({
             name: f.name?.stringValue ?? '?',
             score: Number(f.score?.integerValue ?? 0),

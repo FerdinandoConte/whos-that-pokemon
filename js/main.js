@@ -16,7 +16,9 @@ const TEST_MODE = params.has('test');
 const REVEAL = { pulse: 420, flash: 520, name: 640, next: 900 };
 // test-only hooks: fixed Pokémon order and a fake online project
 const TEST_ORDER = TEST_MODE && params.get('order') ? params.get('order').split(',').map(Number) : null;
-const BOARD_CONFIG = TEST_MODE && params.get('fb') ? { projectId: params.get('fb'), apiKey: 'test-key' } : FIREBASE;
+// automated tests never touch the real Hall of Fame: device board, or a fake project
+let BOARD_CONFIG = FIREBASE;
+if (TEST_MODE) BOARD_CONFIG = params.get('fb') ? { projectId: params.get('fb'), apiKey: 'test-key' } : null;
 
 const app = document.getElementById('app');
 const sheetRoot = document.getElementById('sheets');

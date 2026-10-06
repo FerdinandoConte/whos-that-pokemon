@@ -525,13 +525,27 @@ describe('across themes', () => {
     }
   });
 
-  test('normal players get no test hooks; ?debug=1 shows the debug panel', async () => {
+  test('normal players get no test hooks and use the real online Hall of Fame', async () => {
     const ctx = await newPhone(browser, {});
-    await installRoutes(ctx);
+    const routes = await installRoutes(ctx, {
+      firestore: (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '[]' }),
+    });
     const page = await ctx.newPage();
     await page.goto(base);
     await page.waitForSelector('[data-role="play"]');
     assert.equal(await page.evaluate(() => typeof window.__wtp), 'undefined');
+    await page.waitForTimeout(300);
+    const cfg = JSON.parse(readFileSync(new URL('../../js/config.js', import.meta.url), 'utf8')
+      .match(/FIREBASE = (\{[\s\S]*?\});/)[1].replace(/(\w+):/g, '"$1":').replace(/'/g, '"').replace(/,\s*}/, '}'));
+    assert.ok(routes.firestore.some((r) => r.url.includes(`projects/${cfg.projectId}/`) && r.url.includes(':runQuery')),
+      'home asks the configured project for the top score');
+    await ctx.close();
+  });
+
+  test('?debug=1 shows the debug panel', async () => {
+    const ctx = await newPhone(browser, {});
+    await installRoutes(ctx);
+    const page = await ctx.newPage();
     await page.goto(`${base}?debug=1`);
     await page.waitForSelector('#wtp-debug');
     await page.fill(role('nickname'), 'Dbg');

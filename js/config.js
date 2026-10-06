@@ -3,8 +3,8 @@
 // The apiKey of a Firebase web app is not a secret: access is controlled by
 // firestore.rules.
 export const FIREBASE = {
-  projectId: '',
-  apiKey: '',
+  projectId: 'whos-that-pokemon-be2a6',
+  apiKey: 'AIzaSyBKtIuKIgciRHdvZwBTE8ifac1bQcjn9vo',
 };
 
 // Official artwork and fallback cries are loaded from public mirrors at runtime,
@@ -19,4 +19,4 @@ export const FALLBACK_CRY_SOURCES = [
   (p) => `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${p.id}.ogg`,
 ];
 
-export const SITE_URL = '';
+export const SITE_URL = 'https://ferdinandoconte.github.io/whos-that-pokemon/';

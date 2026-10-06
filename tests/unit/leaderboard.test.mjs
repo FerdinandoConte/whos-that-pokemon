@@ -17,6 +17,7 @@ test('sanitizeName trims, collapses spaces, strips control chars, caps length', 
   assert.equal(sanitizeName('x'.repeat(40)).length, 16);
   assert.equal(sanitizeName(null), '');
   assert.equal(sanitizeName('Marco 🔥'), 'Marco 🔥');
+  assert.equal(sanitizeName('__admin'), 'admin', 'leading underscores are reserved');
 });
 
 test('validateEntry accepts valid entries', () => {
@@ -106,6 +107,7 @@ test('firestore board: invalid entries never reach the network', async () => {
 test('firestore board: top parses runQuery rows and ranks them', async () => {
   const rows = [
     { readTime: '2026-10-06T00:00:00Z' },
+    { document: { fields: { name: { stringValue: '__rules_test__' }, score: { integerValue: '99' }, hints: { integerValue: '0' } } } },
     { document: { fields: { name: { stringValue: 'A' }, score: { integerValue: '4' }, hints: { integerValue: '0' }, createdAt: { timestampValue: '2026-10-01T10:00:00Z' } } } },
     { document: { fields: { name: { stringValue: 'B' }, score: { integerValue: '9' }, hints: { integerValue: '2' }, createdAt: { timestampValue: '2026-10-02T10:00:00Z' } } } },
     { document: { fields: { name: { stringValue: 'C' }, score: { integerValue: '9' }, hints: { integerValue: '0' }, createdAt: { timestampValue: '2026-10-03T10:00:00Z' } } } },
