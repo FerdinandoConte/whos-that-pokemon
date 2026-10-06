@@ -1,0 +1,13 @@
+{
+  "name": "Who's That Pokémon?",
+  "short_name": "Who's That?",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#140C34",
+  "theme_color": "#140C34",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

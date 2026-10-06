@@ -1,0 +1,201 @@
+/* ===== Ember Arcade: neon cabinet, CRT sunset, big round arcade buttons ===== */
+[data-theme="arcade"] {
+  --theme-color: #1A0626;
+  --page-bg: #0d0214;
+  --bg: #1A0626;
+  --ink: #FFF1E0;
+  --font-display: 'Titan One', 'Arial Black', sans-serif;
+  --font-body: 'Quicksand', system-ui, sans-serif;
+  --font-arcade: 'Bungee', 'Arial Black', sans-serif;
+  --focus: #FFB347;
+  --error: #FFB3C7;
+  --btn-primary-bg: #FF4F7E;
+  --btn-primary-ink: #FFF7E8;
+  --btn-border: 3px solid #0D0213;
+  --btn-shadow: inset 0 -6px 0 #C2264F, 0 4px 0 #0D0213;
+  --btn-radius: 14px;
+  --reveal-bg: rgba(13, 2, 19, 0.92);
+  --reveal-ink: #FFF1E0;
+  --reveal-border: 3px solid #FF4FA3;
+  --reveal-shadow: none;
+  --reveal-radius: 12px;
+  --reveal-lost-bg: #3a0b22;
+  --sheet-bg: #FFF4EA;
+  --sheet-ink: #2A0B3D;
+  --sheet-line: #EAC9D9;
+  --sheet-muted: #6E4A60;
+  --sheet-item-bg: #fff;
+  --sheet-border: 4px solid #FF4FA3;
+  --go-accent: #E0306B;
+  --chip-border: 2px solid currentColor;
+  --chip-gen-bg: transparent;
+  --chip-gen-ink: #FFF1E0;
+  --feedback-top: 34%;
+}
+
+/* ---- cabinet frame (home + game) ---- */
+.arcade-home, .arcade-game { background: #1A0626; color: #FFF1E0; font-family: var(--font-body); }
+.arcade-side { position: absolute; top: 0; bottom: 0; width: 12px; z-index: 0; }
+.arcade-side--l { left: 0; background: repeating-linear-gradient(180deg, #FF4FA3 0 40px, #FFB347 40px 80px); }
+.arcade-side--r { right: 0; background: repeating-linear-gradient(180deg, #FFB347 0 40px, #FF4FA3 40px 80px); }
+.arcade-cabinet { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100%; padding: 12px 22px 0; }
+.arcade-marquee {
+  position: relative; flex: 0 0 auto; height: 110px; border-radius: 14px; border: 4px solid #0D0213;
+  display: flex; align-items: center; justify-content: center;
+  background-color: #FF7A3D; background-image: repeating-linear-gradient(180deg, #FFB347 0 12px, #FF7A3D 12px 24px, #FF4F7E 24px 36px);
+}
+.arcade-marquee::before { content: ''; position: absolute; inset: 6px; border-radius: 8px; border: 2px dashed rgba(255, 255, 255, 0.7); animation: arcade-hum 2.5s ease-in-out infinite; }
+.arcade-title {
+  position: relative; text-align: center;
+  font: 400 clamp(32px, 10.5vw, 40px)/1 var(--font-display); color: #FFF7E8;
+  -webkit-text-stroke: 3px #2A0B3D; text-shadow: 0 5px 0 #2A0B3D;
+}
+.arcade-theme {
+  position: absolute; right: -12px; top: -12px; height: 44px;
+  display: inline-flex; align-items: center; gap: 6px; padding: 0 12px;
+  border-radius: 22px; border: 3px solid #0D0213; background: #2A0B3D; color: #FFB347;
+  font: 400 13px var(--font-arcade); letter-spacing: 1px;
+}
+.arcade-theme svg { font-size: 20px; }
+.arcade-bezel { flex: 0 0 auto; margin-top: 12px; padding: 10px; border-radius: 22px; background: #0D0213; }
+.arcade-screen {
+  position: relative; height: 270px; overflow: hidden; border-radius: 26px / 20px;
+  background: linear-gradient(#2A0B3D 0%, #6B1A5E 55%, #FF6B6B 100%);
+}
+.arcade-sun {
+  position: absolute; left: 50%; top: 34px; width: 196px; height: 196px; transform: translateX(-50%); border-radius: 50%;
+  background: repeating-linear-gradient(180deg, #FFD08A 0 14px, #FF7A3D 14px 18px, #FFB347 18px 30px, #FF4F7E 30px 33px);
+}
+.arcade-grid {
+  position: absolute; left: -40%; right: -40%; bottom: -10px; height: 120px;
+  background-color: #1A0626;
+  background-image: linear-gradient(#FF4FA3 2px, transparent 2px), linear-gradient(90deg, #FF4FA3 2px, transparent 2px);
+  background-size: 40px 28px; transform: perspective(160px) rotateX(55deg); transform-origin: 50% 100%;
+  animation: arcade-grid 1.1s linear infinite;
+}
+.arcade-scan { position: absolute; inset: 0; z-index: 5; pointer-events: none; background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0 2px, transparent 2px 4px); }
+.arcade-photo-ring {
+  position: absolute; left: 50%; top: 14px; width: 112px; height: 112px; transform: translateX(-50%);
+  border-radius: 50%; overflow: hidden; border: 4px solid #FFF1E0; box-shadow: 0 0 0 4px #FF4FA3; background: #2A0B3D;
+}
+.arcade-player {
+  position: absolute; left: 50%; top: 136px; transform: translateX(-50%); white-space: nowrap;
+  padding: 2px 10px; border-radius: 6px; background: rgba(26, 6, 38, 0.85);
+  font: 400 14px var(--font-arcade); letter-spacing: 1px;
+}
+.arcade-player span { color: #FFB347; }
+.arcade-dedication {
+  position: absolute; left: 14px; right: 14px; top: 166px; z-index: 2;
+  padding: 8px 10px; border-radius: 10px; background: rgba(26, 6, 38, 0.78);
+  text-align: center; font-weight: 700; font-size: 15px; line-height: 1.35;
+}
+.arcade-panel {
+  position: relative; flex: 1 0 auto; margin: 16px -22px 0; padding: 18px 30px calc(18px + env(safe-area-inset-bottom));
+  display: flex; flex-direction: column; gap: 12px;
+  background: #2A0B3D; border-top: 4px solid #FF4FA3;
+  clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+}
+.arcade-nick .nick-label { font: 400 12px var(--font-arcade); letter-spacing: 1px; color: #FFB347; }
+.arcade-nick .nick-input {
+  height: 48px; padding: 0 14px; border-radius: 8px; border: 3px solid #FF4FA3; background: #0D0213; color: #FFF1E0;
+  font: 400 18px var(--font-arcade); letter-spacing: 2px; text-transform: uppercase;
+}
+.arcade-nick .nick-input::placeholder { color: #8C5A9E; }
+.arcade-buttons { display: flex; align-items: center; justify-content: space-between; }
+.arcade-stick { display: flex; flex-direction: column; align-items: center; }
+.arcade-stick i { display: block; }
+.arcade-stick i:nth-child(1) { width: 30px; height: 30px; border-radius: 50%; background: #FF4F7E; border: 3px solid #0D0213; animation: arcade-wiggle 3s ease-in-out infinite; }
+.arcade-stick i:nth-child(2) { width: 8px; height: 26px; background: #0D0213; }
+.arcade-stick i:nth-child(3) { width: 56px; height: 14px; border-radius: 50%; background: #0D0213; }
+.arcade-btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.arcade-btn-label { font: 400 11px var(--font-arcade); letter-spacing: 1px; color: #FFF1E0; }
+.arcade-blink { color: #FFB347; animation: arcade-blink 1.1s steps(1) infinite; }
+.arcade-play {
+  width: 104px; height: 104px; border-radius: 50%; border: 5px solid #0D0213;
+  background: #FF4F7E; color: #FFF7E8; font: 400 26px var(--font-display);
+  box-shadow: inset 0 -10px 0 #C2264F, 0 6px 0 #0D0213;
+}
+.arcade-play:active, .arcade-hof:active, .arcade-hint:active, .arcade-form .guess-submit:active { transform: translateY(4px); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.25), 0 2px 0 #0D0213; }
+.arcade-hof {
+  width: 64px; height: 64px; border-radius: 50%; border: 4px solid #0D0213; background: #FFB347; color: #2A0B3D;
+  font-size: 26px; display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 -7px 0 #D9822A, 0 5px 0 #0D0213;
+}
+.arcade-best { text-align: center; font: 400 12px var(--font-arcade); color: #C9A9D6; }
+.arcade-best b { font-size: 16px; font-weight: 400; color: #FFB347; }
+
+/* ---- game ---- */
+.arcade-cabinet--game { height: 100%; min-height: 0; padding-top: 10px; }
+.arcade-bezel--game { flex: 1 1 auto; min-height: 150px; display: flex; margin-top: 0; padding: 8px; }
+.arcade-screen.stage { height: auto; flex: 1 1 auto; --sprite-inset: 26% 10% 6%; --missing-ink: #0D0213; --reveal-sprite-top: 20%; }
+.arcade-screen.stage .arcade-sun { top: 22%; width: min(58%, 230px); height: auto; aspect-ratio: 1; }
+.arcade-screen.stage .sprite { --sprite-idle: arcade-float 2.6s ease-in-out infinite; }
+.arcade-hud {
+  position: absolute; left: 12px; right: 12px; top: 10px; z-index: 4;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start;
+  font-family: var(--font-arcade);
+}
+.arcade-hud-label { display: block; font-size: 10px; color: #FFB347; letter-spacing: 1px; }
+.arcade-hud-mid { text-align: center; }
+.arcade-hud-end { text-align: right; }
+.arcade-hud b { font-weight: 400; font-size: 22px; line-height: 1; color: #FFF1E0; }
+.arcade-lives { --life-gap: 5px; --life-lost-opacity: 1; margin-top: 3px; }
+.arcade-lives .px { display: block; width: 14px; height: 14px; background: #FF4F7E; box-shadow: 0 0 0 2px #0D0213; }
+.arcade-lives .life.is-lost { filter: none; transform: none; }
+.arcade-lives .life.is-lost .px { background: transparent; box-shadow: inset 0 0 0 2px #8C5A9E; }
+.arcade-tag {
+  position: absolute; left: 50%; top: 50px; z-index: 4; transform: translateX(-50%); white-space: nowrap;
+  padding: 2px 12px; border-radius: 8px; background: rgba(13, 2, 19, 0.7);
+  font: 400 19px var(--font-display); color: #FFF7E8;
+}
+.arcade-panel--game {
+  flex: 0 0 auto; margin-top: 10px; padding-top: 14px; gap: 10px;
+}
+.arcade-panel-tools { position: absolute; left: 22px; right: 22px; top: 2px; display: flex; justify-content: space-between; pointer-events: none; }
+.arcade-panel-tools .icon-btn { pointer-events: auto; }
+.arcade-icon { --icon-btn-ink: #C9A9D6; font-size: 20px; min-height: 36px; }
+.arcade-panel--game .clues { font-family: var(--font-arcade); margin-top: 18px; }
+.arcade-panel--game .clues:not([hidden]) ~ .slots { margin-top: 0; }
+.arcade-panel--game .slots { margin-top: 26px; }
+.arcade-panel--game .clues-label { color: #FFB347; font: 400 11px var(--font-arcade); }
+.arcade-panel--game .chip { font: 400 13px var(--font-arcade); }
+.arcade-panel--game .chip-type { border-color: #0D0213; }
+.arcade-panel--game .slots {
+  --font-slot: var(--font-arcade); --slot-fs: 26px; --slot-fs-long: 21px; --slot-h: 40px;
+  --slot-underline: 4px solid #FF4FA3; --slot-radius: 0; --slot-open-ink: #FFB347; --slot-fixed-ink: #FFB347;
+}
+.arcade-panel--game .slot.is-open { border-bottom: 4px solid #FFB347; }
+.arcade-form { display: grid; grid-template-columns: 1fr auto auto; grid-template-areas: "input input input" "space hint submit"; gap: 10px 22px; align-items: center; }
+.arcade-form .guess-input {
+  grid-area: input; height: 52px; padding: 0 14px; border-radius: 8px; border: 3px solid #FF4FA3;
+  background: #0D0213; color: #FFF1E0; font: 400 17px var(--font-arcade); letter-spacing: 1px; text-transform: uppercase;
+}
+.arcade-form .guess-input::placeholder { color: #8C5A9E; }
+.arcade-form .guess-submit {
+  grid-area: submit; width: 92px; height: 92px; border-radius: 50%; border: 5px solid #0D0213;
+  background: #FF4F7E; color: #FFF7E8; font: 400 28px var(--font-display);
+  box-shadow: inset 0 -10px 0 #C2264F, 0 6px 0 #0D0213;
+}
+.arcade-form .arcade-btn-wrap { grid-area: hint; }
+.arcade-hint {
+  width: 62px; height: 62px; border-radius: 50%; border: 4px solid #0D0213; background: #FFB347; color: #2A0B3D;
+  font-size: 26px; display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 -7px 0 #D9822A, 0 5px 0 #0D0213;
+}
+
+.kb-open .arcade-side, .kb-open .arcade-tag, .kb-open .arcade-panel-tools { display: none; }
+.kb-open .arcade-cabinet--game { padding: 4px 8px 0; }
+.kb-open .arcade-panel--game { margin: 6px -8px 0; padding: 8px 14px; gap: 6px; clip-path: none; }
+.kb-open .arcade-panel--game .slots, .kb-open .arcade-panel--game .clues { margin-top: 0; }
+.kb-open .arcade-form { grid-template-columns: 1fr auto auto; grid-template-areas: "input hint submit"; gap: 8px; }
+.kb-open .arcade-form .guess-input { height: 46px; }
+.kb-open .arcade-form .guess-submit { width: 54px; height: 54px; font-size: 18px; border-width: 3px; }
+.kb-open .arcade-hint { width: 46px; height: 46px; font-size: 20px; border-width: 3px; }
+.kb-open .arcade-btn-label { display: none; }
+.is-short .arcade-screen:not(.stage) { height: 280px; }
+
+@keyframes arcade-grid { to { background-position: 0 28px; } }
+@keyframes arcade-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+@keyframes arcade-hum { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+@keyframes arcade-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes arcade-wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }

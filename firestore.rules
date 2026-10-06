@@ -1,0 +1,31 @@
+rules_version = '2';
+// Hall of Fame for "Who's That Pokémon?".
+// Anyone can read the board and add one new score; nobody can edit or delete.
+// js/leaderboard.js validateEntry() mirrors these checks.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /scores/{scoreId} {
+      allow get: if true;
+      allow list: if request.query.limit <= 100;
+      allow create: if
+        request.resource.data.keys().hasOnly(['name', 'score', 'hints', 'theme', 'createdAt'])
+        && request.resource.data.keys().hasAll(['name', 'score', 'hints', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 16
+        && request.resource.data.score is int
+        && request.resource.data.score >= 0
+        && request.resource.data.score <= 493
+        && request.resource.data.hints is int
+        && request.resource.data.hints >= 0
+        && request.resource.data.hints <= 3
+        && (!('theme' in request.resource.data)
+            || (request.resource.data.theme is string && request.resource.data.theme.size() <= 12))
+        && request.resource.data.createdAt == request.time;
+      allow update, delete: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

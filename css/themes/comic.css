@@ -1,0 +1,194 @@
+/* ===== Comic Pop: halftone paper, ink outlines, panels and speech bubbles ==== */
+[data-theme="comic"] {
+  --theme-color: #FFF8E7;
+  --page-bg: #F3E8CF;
+  --bg: #FFF8E7;
+  --ink: #111;
+  --font-display: 'Luckiest Guy', 'Arial Black', sans-serif;
+  --font-body: 'Baloo 2', system-ui, sans-serif;
+  --focus: #23B5E8;
+  --error: #C2185B;
+  --btn-primary-bg: #E0217A;
+  --btn-primary-ink: #FFE14D;
+  --btn-border: 4px solid #111;
+  --btn-shadow: 5px 5px 0 #111;
+  --btn-radius: 0;
+  --reveal-bg: #fff;
+  --reveal-ink: #111;
+  --reveal-border: 4px solid #111;
+  --reveal-shadow: 5px 5px 0 #111;
+  --reveal-radius: 22px;
+  --reveal-lost-bg: #111;
+  --sheet-bg: #FFF8E7;
+  --sheet-ink: #111;
+  --sheet-line: #111;
+  --sheet-muted: #5C4A50;
+  --sheet-item-bg: #fff;
+  --sheet-border: 4px solid #111;
+  --sheet-radius: 0px;
+  --sheet-primary-font: 400 26px 'Luckiest Guy', sans-serif;
+  --go-accent: #E0217A;
+  --chip-border: 3px solid #111;
+  --chip-radius: 0;
+  --chip-gen-bg: #fff;
+  --chip-gen-ink: #111;
+  --icon-btn-radius: 0;
+  --feedback-top: 46%;
+}
+[data-theme="comic"] .sheet-btn { border-width: 3px; box-shadow: 3px 3px 0 #111; }
+
+/* ---- shared comic surface ---- */
+.comic-home, .comic-game {
+  background-color: #FFF8E7;
+  background-image: radial-gradient(#F6C9D9 2px, transparent 2.4px);
+  background-size: 12px 12px;
+  color: #111; font-family: var(--font-body);
+}
+.comic-panel { position: relative; border: 4px solid #111; }
+
+/* ---- home ---- */
+.comic-home { padding: 16px 16px 20px; gap: 12px; }
+.comic-title-panel {
+  flex: 0 0 auto; margin-top: 10px; padding: 20px 14px 22px;
+  background-color: #23B5E8; background-image: radial-gradient(rgba(255, 255, 255, 0.35) 2px, transparent 2.4px);
+  background-size: 10px 10px; transform: rotate(-1deg);
+}
+.comic-issue {
+  position: absolute; left: 10px; top: -4px; transform: translateY(-50%);
+  padding: 0 8px; background: #FFE14D; border: 3px solid #111;
+  font: 400 16px 'Bangers', cursive; letter-spacing: 1px;
+}
+.comic-theme {
+  position: absolute; right: -8px; top: -16px; height: 44px;
+  display: inline-flex; align-items: center; gap: 6px; padding: 0 10px;
+  border: 3px solid #111; background: #fff; color: #111; box-shadow: 3px 3px 0 #111;
+  font: 400 18px 'Bangers', cursive; letter-spacing: 1px;
+}
+.comic-theme svg { font-size: 20px; }
+.comic-title {
+  font: 400 clamp(40px, 13vw, 50px)/0.92 var(--font-display); text-align: center;
+  color: #FFE14D; -webkit-text-stroke: 3px #111; text-shadow: 5px 5px 0 #111;
+}
+.comic-mid { flex: 0 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.comic-photo-panel { height: 180px; overflow: hidden; background: #FFE14D; }
+.comic-starring {
+  position: absolute; left: -2px; top: -2px; z-index: 1;
+  padding: 2px 6px; background: #fff; border: 3px solid #111;
+  font: 400 14px 'Bangers', cursive; letter-spacing: 1px;
+}
+.comic-name {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  padding: 3px 0; text-align: center; background: #E0217A; border-top: 3px solid #111;
+  font: 400 20px 'Bangers', cursive; letter-spacing: 1.5px; color: #fff;
+}
+.comic-bubble-wrap { display: flex; align-items: center; }
+.comic-bubble {
+  position: relative; background: #fff; border: 4px solid #111; border-radius: 24px;
+  padding: 12px; font-weight: 800; font-size: 15px; line-height: 1.3;
+}
+.comic-bubble::before {
+  content: ''; position: absolute; left: -22px; bottom: 22px;
+  border-style: solid; border-width: 10px 22px 10px 0; border-color: transparent #111 transparent transparent;
+}
+.comic-bubble::after {
+  content: ''; position: absolute; left: -14px; bottom: 26px;
+  border-style: solid; border-width: 6px 14px 6px 0; border-color: transparent #fff transparent transparent;
+}
+.comic-start-panel {
+  flex: 0 0 auto; background: #fff; padding: 16px 14px; margin-top: 18px;
+  display: flex; flex-direction: column; gap: 12px; transform: rotate(0.6deg);
+}
+.comic-burst { position: absolute; right: -8px; top: -34px; width: 92px; height: 92px; animation: comic-wobble 1.6s ease-in-out infinite; }
+.comic-burst svg { width: 100%; height: 100%; }
+.comic-burst path { fill: #E0217A; stroke: #111; stroke-width: 4; stroke-linejoin: round; }
+.comic-burst span {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font: 400 17px 'Bangers', cursive; color: #fff;
+}
+.comic-nick .nick-label { font: 400 20px 'Bangers', cursive; letter-spacing: 1px; }
+.comic-nick .nick-input {
+  height: 52px; padding: 0 14px; border: 4px solid #111; border-radius: 0;
+  background: #FFF8E7; color: #111; font: 800 19px var(--font-body);
+}
+.comic-play {
+  height: 66px; border: 4px solid #111; border-radius: 0; background: #E0217A; color: #FFE14D;
+  font: 400 34px var(--font-display); letter-spacing: 2px; -webkit-text-stroke: 1.5px #111;
+  box-shadow: 6px 6px 0 #111;
+}
+.comic-play:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 #111; }
+.comic-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.comic-hof {
+  min-height: 48px; border: 4px solid #111; border-radius: 0; background: #23B5E8; color: #111;
+  font: 400 20px 'Bangers', cursive; letter-spacing: 1px; box-shadow: 4px 4px 0 #111;
+}
+.comic-best {
+  min-height: 48px; border: 4px dashed #111; display: flex; align-items: center; justify-content: center; gap: 6px;
+  font: 400 20px 'Bangers', cursive; letter-spacing: 1px;
+}
+.comic-best b { font: 400 24px var(--font-display); color: #E0217A; }
+
+/* ---- game ---- */
+.comic-game { padding: 12px 14px 12px; gap: 10px; }
+.comic-hud { flex: 0 0 auto; display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 8px; }
+.comic-box { border: 3px solid #111; padding: 2px 8px; box-shadow: 3px 3px 0 #111; background: #fff; }
+.comic-box-label { display: block; font: 400 14px 'Bangers', cursive; letter-spacing: 1px; line-height: 1.1; }
+.comic-box--score { background: #FFE14D; text-align: center; }
+.comic-box--score b { font: 400 26px/1 var(--font-display); }
+.comic-box--tools { display: flex; align-items: center; justify-content: space-around; padding: 0; background: #23B5E8; }
+.comic-icon { --icon-btn-ink: #111; min-width: 40px; }
+.comic-lives { --life-size: 22px; --life-gap: 3px; }
+.comic-lives .life-fill { fill: #E0217A; stroke: #111; stroke-width: 2.5; }
+.comic-lives .life.is-lost .life-fill { fill: #fff; }
+.comic-lives .life.is-lost { opacity: 1; filter: none; }
+.comic-stage { border: 4px solid #111; background: #FFE14D; --sprite-inset: 18% 12% 12%; }
+.comic-stage-rays {
+  position: absolute; left: 50%; top: 50%; width: 900px; height: 900px; transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(from 0deg, #FFC21A 0deg 10deg, #FFE14D 10deg 20deg);
+  animation: comic-spin 60s linear infinite;
+}
+.comic-stage-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(224, 33, 122, 0.22) 2px, transparent 2.4px); background-size: 10px 10px; }
+.comic-stage .sprite { --sprite-idle: comic-shake 1.8s ease-in-out infinite; }
+.comic-say {
+  position: absolute; left: 10px; top: 10px; z-index: 2;
+  background: #fff; border: 4px solid #111; border-radius: 22px; padding: 6px 14px;
+  font: 400 21px/1 var(--font-display);
+}
+.comic-qq {
+  position: absolute; right: 12px; top: 12px; z-index: 2;
+  font: 400 40px 'Bangers', cursive; color: #E0217A; -webkit-text-stroke: 2px #111; transform: rotate(10deg);
+}
+.comic-round {
+  position: absolute; right: 8px; bottom: 8px; z-index: 2;
+  padding: 0 6px; background: #fff; border: 3px solid #111;
+  font: 400 15px 'Bangers', cursive; letter-spacing: 1px;
+}
+.comic-controls { flex: 0 0 auto; display: flex; flex-direction: column; gap: 10px; }
+.comic-controls .clues-label { font: 400 18px 'Bangers', cursive; letter-spacing: 1px; opacity: 1; }
+.comic-controls .slots {
+  --slot-bg: #fff; --slot-border: 3px solid #111; --slot-radius: 0;
+  --slot-open-bg: #E0217A; --slot-open-ink: #FFE14D; --slot-open-border: 3px solid #111;
+}
+.comic-controls .slot.is-open { -webkit-text-stroke: 1px #111; }
+.comic-form .guess-input {
+  flex: 1; height: 56px; padding: 0 14px; border: 4px solid #111; border-radius: 0;
+  background: #fff; color: #111; font: 800 19px var(--font-body);
+}
+.comic-form .guess-submit {
+  width: 92px; height: 56px; border: 4px solid #111; border-radius: 0; background: #E0217A; color: #FFE14D;
+  font: 400 24px var(--font-display); -webkit-text-stroke: 1px #111; box-shadow: 4px 4px 0 #111;
+}
+.comic-form .guess-submit:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #111; }
+.comic-hint {
+  min-height: 46px; border: 3px solid #111; border-radius: 0; background: #23B5E8; color: #111;
+  font: 400 20px 'Bangers', cursive; letter-spacing: 1px; box-shadow: 4px 4px 0 #111;
+}
+.comic-hint:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #111; }
+
+.kb-open .comic-say, .kb-open .comic-qq, .kb-open .comic-round { display: none; }
+.kb-open .comic-game { padding-top: 6px; gap: 6px; }
+.kb-open .comic-hint { min-height: 36px; font-size: 17px; }
+.kb-open .comic-form .guess-input, .kb-open .comic-form .guess-submit { height: 46px; }
+
+@keyframes comic-wobble { 0%, 100% { transform: rotate(-8deg) scale(1); } 50% { transform: rotate(-4deg) scale(1.06); } }
+@keyframes comic-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes comic-shake { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
