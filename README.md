@@ -13,6 +13,10 @@
 
 **Author:** [Ferdinando Conte](https://github.com/FerdinandoConte)
 
+![The five themes: Night Arena, TV Burst, Comic Pop, Wild Forest, Ember Arcade](docs/screenshots/themes.jpg)
+
+<p align="center"><img src="docs/screenshots/gameplay-hint.jpg" alt="Gameplay: silhouette, LED scoreboard, hint revealing generation, type and one letter" width="300"></p>
+
 ---
 
 ## 📌 Overview
@@ -96,7 +100,9 @@ There is **no backend code**. The browser downloads static files from GitHub Pag
 whos-that-pokemon/
 ├── index.html                  # Single page; applies the saved theme before first paint
 ├── manifest.webmanifest        # "Add to Home screen" support
+├── .nojekyll                   # Serve files as-is on GitHub Pages (no Jekyll build)
 ├── firestore.rules             # Server-side validation for the Hall of Fame
+├── LICENSE · NOTICE            # MIT for the code; rights for recordings, photo, trademarks
 │
 ├── css/
 │   ├── app.css                 # Shared foundation: silhouette, reveal, slots, sheets, animations
@@ -122,6 +128,8 @@ whos-that-pokemon/
 ├── data/pokemon.json           # 493 entries: id, name, types, generation, cry flag
 ├── audio/cries/<id>.mp3        # Daniele's cleaned cries (mono, 44.1 kHz, 80 kbps)
 ├── img/                        # Daniele's photo, app icons
+│
+├── docs/screenshots/           # README images, captured from the live site
 │
 ├── tools/
 │   ├── clean_audio.py          # Audio-cleaning pipeline (NumPy/SciPy + ffmpeg)
@@ -335,6 +343,6 @@ On the Spark plan Firebase **cannot** charge: if the daily free quota (50 000 re
 
 ## ⚖️ License & Disclaimer
 
-The **source code** is released under the [MIT License](LICENSE). The **voice recordings** in `audio/cries/` and the **photo** in `img/` belong to Daniele and are **not** covered by the MIT License; they may not be reused outside this project without permission.
+The **source code** is released under the [MIT License](LICENSE). The **voice recordings** in `audio/cries/` and the **photo** in `img/` belong to Daniele and are **not** covered by the MIT License; they may not be reused outside this project without permission (see [`NOTICE`](NOTICE)).
 
 This is an unofficial, non-commercial fan project. Pokémon and Pokémon character names are trademarks of Nintendo, Creatures Inc. and GAME FREAK inc. No official artwork or audio is stored in this repository.

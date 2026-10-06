@@ -39,6 +39,7 @@
 .arcade-side--l { left: 0; background: repeating-linear-gradient(180deg, #FF4FA3 0 40px, #FFB347 40px 80px); }
 .arcade-side--r { right: 0; background: repeating-linear-gradient(180deg, #FFB347 0 40px, #FF4FA3 40px 80px); }
 .arcade-cabinet { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100%; padding: 12px 22px 0; }
+.arcade-home .arcade-cabinet { padding-top: 64px; }
 .arcade-marquee {
   position: relative; flex: 0 0 auto; height: 110px; border-radius: 14px; border: 4px solid #0D0213;
   display: flex; align-items: center; justify-content: center;
@@ -51,7 +52,7 @@
   -webkit-text-stroke: 3px #2A0B3D; text-shadow: 0 5px 0 #2A0B3D;
 }
 .arcade-theme {
-  position: absolute; right: -12px; top: -12px; height: 44px;
+  position: absolute; right: 0; top: -54px; height: 44px;
   display: inline-flex; align-items: center; gap: 6px; padding: 0 12px;
   border-radius: 22px; border: 3px solid #0D0213; background: #2A0B3D; color: #FFB347;
   font: 400 13px var(--font-arcade); letter-spacing: 1px;

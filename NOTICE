@@ -1,0 +1,11 @@
+Who's That Pokémon? — third-party and non-code content
+
+The MIT License in LICENSE covers the source code only.
+
+- audio/cries/: voice recordings by Daniele. All rights reserved; not licensed
+  under the MIT License and not to be reused outside this project without permission.
+- img/daniele.jpg: photograph of Daniele. All rights reserved.
+- Pokémon and Pokémon character names are trademarks of Nintendo, Creatures Inc.
+  and GAME FREAK inc. This is an unofficial, non-commercial fan project; no
+  official artwork or audio is stored in this repository. Official artwork is
+  loaded at runtime from the PokéAPI sprites mirror (https://github.com/PokeAPI/sprites).
