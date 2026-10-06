@@ -297,7 +297,10 @@ async function reveal(p, mode) {
   const nextBtn = $('next');
   nextBtn.hidden = mode !== 'correct';
   $('reveal').hidden = false;
-  if (p.cry) audio.playCry(p);
+  if (p.cry) {
+    // if the recording can't be loaded (e.g. bad connection), try the official cry
+    audio.playCry(p).then((how) => { if (how === 'none' && stage.isConnected) audio.playFallback(p); });
+  }
   if (mode === 'correct') {
     const rect = stage.getBoundingClientRect();
     const colors = [...p.types.map((t) => TYPE_COLORS[t]), '#ffffff', '#FFD23F'];

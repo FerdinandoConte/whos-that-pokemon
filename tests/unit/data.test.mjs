@@ -79,6 +79,11 @@ test('fallback cry ids are unique, lowercase alphanumeric', () => {
   assert.equal(dex[121].sd, 'mrmime');
 });
 
+test('every one of the 493 Pokémon has Daniele’s recording', () => {
+  const missing = dex.filter((p) => !p.cry).map((p) => p.id);
+  assert.deepEqual(missing, []);
+});
+
 test('cry flag matches the files in audio/cries, and no stray files', () => {
   const files = readdirSync(new URL('../../audio/cries/', import.meta.url));
   for (const f of files) assert.match(f, /^\d+\.mp3$/, `unexpected file ${f}`);

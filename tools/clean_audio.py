@@ -1,7 +1,8 @@
 """Cleanup pipeline for Daniele's recorded Pokémon cries.
 
 Steps per file (only Pokédex numbers inside the requested range):
-  1. decode to mono 48 kHz float
+  1. decode to mono 48 kHz float; if the recording clipped (overloaded),
+     rebuild the flattened peaks with ffmpeg adeclip
   2. high-pass at 80 Hz (handling noise, rumble)
   3. spectral gate: noise profile from the quietest frames, gentle subtraction
   4. trim leading/trailing silence with an adaptive threshold, keep short pre/post roll
@@ -33,12 +34,18 @@ FADE_IN = 0.008
 FADE_OUT = 0.06
 
 
-def load(path):
+def load(path, declip=False):
+    af = ["-af", "adeclip"] if declip else []
     raw = subprocess.run(
-        ["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"],
+        ["ffmpeg", "-v", "error", "-i", path, *af, "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"],
         capture_output=True, check=True,
     ).stdout
     return np.frombuffer(raw, dtype=np.float32).astype(np.float64)
+
+
+def clipped_samples(x):
+    """Samples stuck at full scale: the recording overloaded (digital clipping)."""
+    return int((np.abs(x) > 0.995).sum())
 
 
 def frame_db(x, win=0.02):
@@ -63,6 +70,11 @@ def active_region(x):
     def keep(g):
         return len(g) >= 3 or db[g].max() > top - 12
     groups = [g for g in groups if keep(g)] or groups
+    # a separate, much quieter sound before or after the cry (breath, rustle,
+    # hum) is trimmed away; quiet parts between two loud bursts are kept
+    loud = [i for i, g in enumerate(groups) if db[g].max() > top - 22]
+    if loud:
+        groups = groups[loud[0]: loud[-1] + 1]
     return groups[0][0] * 0.02, (groups[-1][-1] + 1) * 0.02, float(floor), float(top)
 
 
@@ -100,6 +112,11 @@ def process(args):
     src, dst = args
     pid = int(os.path.basename(src)[:-4])
     x = load(src)
+    in_clipped = clipped_samples(x)
+    declipped = in_clipped > 5
+    if declipped:
+        # rebuild the clipped peaks before anything else (ffmpeg adeclip)
+        x = load(src, declip=True)
     raw_dur = len(x) / SR
     s0, e0, floor, top = active_region(x)
 
@@ -161,6 +178,7 @@ def process(args):
         bytes=os.path.getsize(dst),
         trim_start=round(a / SR, 3), trim_end=round(b / SR, 3),
         retained=round(retained, 4),
+        in_clipped=in_clipped, declipped=declipped,
     )
 
 

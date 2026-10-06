@@ -48,8 +48,8 @@ Metti tutti gli mp3 originali in una cartella (nomi `1.mp3`, `2.mp3`, …) e lan
 python3 tools/clean_audio.py <cartella_originali> audio/cries tools/audio_report.json 493
 ```
 
-Poi rigenera il campo `cry` dei dati (lo fa il test `data` se non coincide: vedi l'errore) ed esegui i test.
-La pulizia fa: filtro passa-alto a 80 Hz, riduzione del fruscio, taglio dei silenzi iniziali e finali,
+Poi aggiorna il campo `cry` in `data/pokemon.json` (il test `data` segnala se non coincide con i file) ed esegui i test.
+La pulizia fa: ricostruzione dei picchi saturati (se la registrazione è andata in distorsione), filtro passa-alto a 80 Hz, riduzione del fruscio, taglio dei silenzi iniziali e finali,
 volume uniforme (-16 LUFS, picco -1 dB), mp3 mono 80 kbps.
 
 ## Test

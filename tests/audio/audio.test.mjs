@@ -65,7 +65,8 @@ test('every file decodes, is mono 44.1 kHz mp3, sized for phones, at a uniform l
       if (m.codec !== 'mp3') problems.push(`${f}: codec ${m.codec}`);
       if (m.rate !== 44100) problems.push(`${f}: ${m.rate} Hz`);
       if (m.channels !== 1) problems.push(`${f}: ${m.channels} channels`);
-      if (!(m.duration >= 0.3 && m.duration <= 4)) problems.push(`${f}: duration ${m.duration}s`);
+      // Jigglypuff sings its whole lullaby, so allow up to 6 s
+      if (!(m.duration >= 0.3 && m.duration <= 6)) problems.push(`${f}: duration ${m.duration}s`);
       if (size > 60000) problems.push(`${f}: ${size} bytes`);
       if (m.lufs === null || Math.abs(m.lufs - TARGET_LUFS) > 1.5) problems.push(`${f}: ${m.lufs} LUFS`);
       if (m.peak === null || m.peak > -0.1) problems.push(`${f}: peak ${m.peak} dBFS (clipping risk)`);

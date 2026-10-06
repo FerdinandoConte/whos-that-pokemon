@@ -22,12 +22,12 @@ after(async () => { await browser.close(); server.close(); });
 
 /** Opens the game on a phone. Collects page errors so every test can assert none happened. */
 async function open({ theme = 'arena', order = null, fb = null, nickname = 'Marco', best = null, artwork = 'ok',
-  device = 'iPhone 13', viewport = null, firestore = null, clearStorage = false } = {}) {
+  device = 'iPhone 13', viewport = null, firestore = null, clearStorage = false, missingCries = [] } = {}) {
   const storage = clearStorage ? {} : { 'wtp.theme': theme, 'wtp.sound': 'off' };
   if (!clearStorage && nickname !== null) storage['wtp.nickname'] = nickname;
   if (best !== null) storage['wtp.best'] = String(best);
   const ctx = await newPhone(browser, { device, storage, ...(viewport ? { viewport } : {}) });
-  const routes = await installRoutes(ctx, { artwork, firestore });
+  const routes = await installRoutes(ctx, { artwork, firestore, missingCries });
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
@@ -191,7 +191,8 @@ for (const theme of THEMES) {
     });
 
     test('game: correct guess reveals, plays Daniele’s cry, throws confetti, then Next', async () => {
-      const { ctx, page, errors } = await open({ theme, order: [100, 1] }); // Voltorb has a recording, Bulbasaur does not
+      // Bulbasaur's recording is made to fail loading, to check the official-cry fallback
+      const { ctx, page, errors } = await open({ theme, order: [100, 1], missingCries: [1] });
       await startRun(page);
       await page.evaluate(() => {
         window.__cries = [];
@@ -224,8 +225,9 @@ for (const theme of THEMES) {
       assert.equal(await page.$eval(role('sprite'), (i) => i.classList.contains('is-hidden')), true);
       await guess(page, 'Bulbasaur');
       await waitReveal(page);
-      await page.waitForTimeout(100);
-      assert.deepEqual((await page.evaluate(() => window.__cries))[1], ['fallback', 1], 'official cry when there is no recording');
+      await page.waitForFunction(() => window.__cries.length >= 3);
+      assert.deepEqual((await page.evaluate(() => window.__cries)).slice(1), [['daniele', 1], ['fallback', 1]],
+        'official cry when the recording cannot be loaded');
       assert.deepEqual(errors, []);
       await ctx.close();
     });

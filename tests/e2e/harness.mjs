@@ -59,7 +59,11 @@ export async function installRoutes(context, options = {}) {
   const log = { artwork: [], cries: [], fonts: 0, firestore: [] };
   await context.route('**/*', async (route) => {
     const u = new URL(route.request().url());
-    if (u.hostname === '127.0.0.1') return route.continue();
+    if (u.hostname === '127.0.0.1') {
+      const m = u.pathname.match(/\/audio\/cries\/(\d+)\.mp3$/);
+      if (m && (options.missingCries || []).includes(Number(m[1]))) return route.fulfill({ status: 404, body: '' });
+      return route.continue();
+    }
     if (u.hostname === 'raw.githubusercontent.com' && u.pathname.includes('/sprites/')) {
       log.artwork.push(u.href);
       if (options.artwork === 'fail-first' || options.artwork === 'fail-all') return route.fulfill({ status: 404, body: '' });
